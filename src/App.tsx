@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { Volume2, VolumeX, Volume1, Sparkles } from 'lucide-react';
 import StartScreen from './components/views/StartScreen';
@@ -42,7 +42,7 @@ export default function App() {
   const [currentView, setCurrentView] = useState<'space' | 'nebula' | 'plasma'>('space');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isVolumeOpen, setIsVolumeOpen] = useState(false);
-  const [volume, setVolume] = useState(1); // 0 to 1
+  const [volume, setVolume] = useState(0.3); // 0 to 1
   const [playerName, setPlayerName] = useState('');
   const [currentSong, setCurrentSong] = useState<string | null>(null);
   const [previewSong, setPreviewSong] = useState<string | null>(null);
@@ -53,13 +53,13 @@ export default function App() {
   const [aiMessage, setAiMessage] = useState('');
   const [hasDeparted, setHasDeparted] = useState(false);
 
-  const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleVolumeChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const newVolume = parseFloat(e.target.value);
     setVolume(newVolume);
     setMute(newVolume === 0);
-  };
+  }, []);
 
-  const handleImport = (data: any) => {
+  const handleImport = useCallback((data: any) => {
     if (data && data.stars) {
       setPlayerName(data.playerName || 'Traveler');
       setStars(data.stars);
@@ -70,9 +70,9 @@ export default function App() {
     } else {
       alert("Invalid log format.");
     }
-  };
+  }, []);
 
-  const handleExport = () => {
+  const handleExport = useCallback(() => {
     const data = {
       playerName,
       stars,
@@ -89,28 +89,28 @@ export default function App() {
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-  };
+  }, [playerName, stars, starLogs, starLetters, hasDeparted]);
 
-  const handleBegin = (name: string) => {
+  const handleBegin = useCallback((name: string) => {
     setPlayerName(name);
     setScreen('plasma-init');
-  };
+  }, []);
 
-  const handleSelectStar = (star: Star) => {
+  const handleSelectStar = useCallback((star: Star) => {
     if (star.isWhite) return; // Already healed
     setSelectedStar(star);
     setScreen('talk');
-  };
+  }, []);
 
-  const handleBackToSpace = (log: { role: string; text: string }[]) => {
+  const handleBackToSpace = useCallback((log: { role: string; text: string }[]) => {
     if (selectedStar) {
       setStarLogs(prev => ({ ...prev, [selectedStar.id]: log }));
     }
     setSelectedStar(null);
     setScreen('space');
-  };
+  }, [selectedStar]);
 
-  const handleDepart = async (log: { role: string; text: string }[]) => {
+  const handleDepart = useCallback(async (log: { role: string; text: string }[]) => {
     if (selectedStar) {
       setStarLogs(prev => ({ ...prev, [selectedStar.id]: log }));
     }
@@ -134,14 +134,14 @@ export default function App() {
     setTimeout(() => {
       setScreen('letter');
     }, 6000);
-  };
+  }, [selectedStar]);
 
-  const handleCloseLetter = () => {
+  const handleCloseLetter = useCallback(() => {
     setSelectedStar(null);
     setScreen('space');
-  };
+  }, []);
 
-  const isLogMode = screen === 'view-log' || screen === 'log-list';
+  const isLogMode = screen === 'view-log' || screen === 'log-list' || screen === 'talk';
 
   return (
     <div className="relative w-full h-screen overflow-hidden bg-black text-white font-sans selection:bg-white/20">
@@ -163,7 +163,7 @@ export default function App() {
             </button>
           )}
           
-          <div className={`absolute right-6 z-50 flex flex-col items-center ${screen === 'talk' ? 'top-20' : 'top-6'}`}>
+          <div className="absolute right-6 top-6 z-50 flex flex-col items-center">
             <button 
               onClick={() => setIsVolumeOpen(!isVolumeOpen)}
               className="p-3 rounded-full hover:bg-white/10 text-white/50 hover:text-white transition-all duration-500 bg-white/5 shadow-[0_0_15px_rgba(255,255,255,0.2)]"
@@ -217,6 +217,7 @@ export default function App() {
             src={previewSong || currentSong || undefined} 
             playing={true} 
             volume={volume}
+            muted={volume === 0}
             loop={true}
             width="0"
             height="0"

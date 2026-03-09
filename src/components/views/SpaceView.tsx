@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'motion/react';
 import { Star } from '../../App';
 
@@ -134,7 +134,7 @@ export default function SpaceView({
   );
 }
 
-function StarNode({ star, containerRef, starRefs, onSelectStar }: any) {
+const StarNode = React.memo(function StarNode({ star, containerRef, starRefs, onSelectStar }: any) {
   const [isDragging, setIsDragging] = useState(false);
   // Memoize random durations so they don't change on every mouse move
   const randomYDuration = useRef(4 + Math.random() * 3);
@@ -184,4 +184,4 @@ function StarNode({ star, containerRef, starRefs, onSelectStar }: any) {
     </motion.div>
     </>
   );
-}
+});

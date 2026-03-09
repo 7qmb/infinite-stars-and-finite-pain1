@@ -76,7 +76,7 @@ export default function StarTalk({
         {/* Top Right Ship */}
         <button 
           onClick={() => setShowConfirm(true)}
-          className="absolute top-6 right-6 p-3 rounded-full hover:bg-white/10 text-white/50 hover:text-white transition-colors pointer-events-auto"
+          className="absolute top-20 right-6 p-3 rounded-full hover:bg-white/10 text-white/50 hover:text-white transition-colors pointer-events-auto"
           title="Depart"
         >
           <Ship size={24} strokeWidth={1.5} />

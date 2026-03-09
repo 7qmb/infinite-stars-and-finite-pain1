@@ -13,7 +13,7 @@ const SONGS: Song[] = [
   { id: '1', title: 'Orange Hues', url: 'https://youtu.be/tk9VD3jUoDY?si=FK13vB_XUYHvkzUf' },
   { id: '2', title: 'just a cat', url: 'https://youtu.be/yNXjlXhehpA?si=LKVB_V6SeNGm0hTn' },
   { id: '3', title: 'out of place', url: 'https://youtu.be/9ytiyD_QA2s?si=SfJpVJE0BlxOlLpu' },
-  { id: '4', title: 'Dial, him', url: 'https://youtu.be/1ZYbU82GVz4' },
+  { id: '4', title: 'Feet', url: 'https://youtu.be/apwdxcFTaaE?si=T71y4Ux7ytq7naax' },
   { id: '5', title: 'Kiss me', url: 'https://youtu.be/K2tbQ_g2VbQ?si=cJGvB0inv2lXIpQi' },
   { id: '6', title: 'Wind', url: 'https://youtu.be/8kQiNKuPRRI?si=Yqahx8GymShuXdXc'},
   { id: '7', title: 'Pure Imagination', url: 'https://youtu.be/s0sYF_EFv_s?si=g7eS7OORSmY1L1DM'},
@@ -117,17 +117,17 @@ export default function PlasmaView({ volume, isInitial, onSelectSong, onPreviewS
             </path>
             
             {/* Concentric circles and dots */}
-            <circle cx="75%" cy="25%" r="150" strokeDasharray="10 20" style={{ transformOrigin: '75% 25%', animation: 'spin 20s linear infinite' }} />
-            <circle cx="75%" cy="25%" r="180" strokeDasharray="2 10" strokeWidth="4" style={{ transformOrigin: '75% 25%', animation: 'spin 25s linear infinite reverse' }} />
+            <circle cx="75%" cy="25%" r="150" strokeDasharray="10 20" style={{ transformOrigin: '75% 25%', animation: 'spin 25s linear infinite' }} />
+            <circle cx="75%" cy="25%" r="180" strokeDasharray="2 10" strokeWidth="4" style={{ transformOrigin: '75% 25%', animation: 'spin 31s linear infinite reverse' }} />
             <circle cx="75%" cy="25%" r="220" />
-            <circle cx="75%" cy="25%" r="260" strokeDasharray="15 30" style={{ transformOrigin: '75% 25%', animation: 'spin 30s linear infinite' }} />
+            <circle cx="75%" cy="25%" r="260" strokeDasharray="15 30" style={{ transformOrigin: '75% 25%', animation: 'spin 38s linear infinite' }} />
             
             <circle cx="20%" cy="80%" r="120" />
-            <circle cx="20%" cy="80%" r="160" strokeDasharray="4 12" style={{ transformOrigin: '20% 80%', animation: 'spin 15s linear infinite reverse' }} />
-            <circle cx="20%" cy="80%" r="200" strokeDasharray="1 15" strokeWidth="3" style={{ transformOrigin: '20% 80%', animation: 'spin 20s linear infinite' }} />
+            <circle cx="20%" cy="80%" r="160" strokeDasharray="4 12" style={{ transformOrigin: '20% 80%', animation: 'spin 19s linear infinite reverse' }} />
+            <circle cx="20%" cy="80%" r="200" strokeDasharray="1 15" strokeWidth="3" style={{ transformOrigin: '20% 80%', animation: 'spin 25s linear infinite' }} />
             
             <circle cx="50%" cy="50%" r="400" stroke="rgba(255,255,255,0.1)" strokeWidth="1" />
-            <circle cx="50%" cy="50%" r="500" stroke="rgba(255,255,255,0.1)" strokeWidth="1" strokeDasharray="5 20" style={{ transformOrigin: '50% 50%', animation: 'spin 40s linear infinite' }} />
+            <circle cx="50%" cy="50%" r="500" stroke="rgba(255,255,255,0.1)" strokeWidth="1" strokeDasharray="5 20" style={{ transformOrigin: '50% 50%', animation: 'spin 50s linear infinite' }} />
           </g>
         </svg>
       </div>
@@ -162,13 +162,13 @@ export default function PlasmaView({ volume, isInitial, onSelectSong, onPreviewS
                 transition={{ duration: 0.3 }}
               >
                 <div 
-                  className={`text-2xl md:text-4xl font-light tracking-widest transition-all duration-500 ${
+                  className={`flex items-center justify-center gap-4 text-2xl md:text-4xl font-light tracking-widest transition-all duration-500 ${
                     isSelected ? 'text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.8)]' : 'text-white/30'
                   }`}
                 >
-                  {isSelected && <span className="absolute left-10 text-white/80">{'>'}</span>}
-                  {song.title}
-                  {isSelected && <span className="absolute right-10 text-white/80">{'<'}</span>}
+                  <span className={`transition-opacity duration-300 ${isSelected ? 'opacity-80' : 'opacity-0'}`}>{'>'}</span>
+                  <span className="truncate max-w-[280px] md:max-w-[400px]">{song.title}</span>
+                  <span className={`transition-opacity duration-300 ${isSelected ? 'opacity-80' : 'opacity-0'}`}>{'<'}</span>
                 </div>
               </motion.div>
             );
